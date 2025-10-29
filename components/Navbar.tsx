@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Home, Briefcase, BookOpen, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const createPageUrl = (page: string): string => {
   const routes: Record<string, string> = {
@@ -57,12 +58,15 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link
-            href={createPageUrl("Home")}
-            className="font-bold text-xl md:text-2xl text-gray-900 hover:text-gray-700 transition-colors"
-          >
-            FDC
-          </Link>
+          <div className="flex gap-2">
+            <Image src="/icon.png" alt="Logo" width={32} height={32}></Image>
+            <Link
+              href={createPageUrl("Home")}
+              className="font-bold text-xl md:text-2xl text-gray-900 hover:text-gray-700 transition-colors"
+            >
+              FDC
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
