@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://franc-alvenn-dela-cruz.vercel.app
+
+# Sitemaps
+Sitemap: https://franc-alvenn-dela-cruz.vercel.app/sitemap.xml
