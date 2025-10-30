@@ -8,11 +8,15 @@ const client = createClient({
   environment: process.env.CONTENTFUL_ENVIRONMENT ?? "master",
 });
 
-export async function GET(request: Request, { params }: { params: { slug: string } }) {
-  const slug = params?.slug || new URL(request.url).pathname.split("/").pop();
+export async function GET(
+  request: Request,
+  context: { params: Promise<{ slug: string }> }  // ← params is a Promise!
+) {
+  const params = await context.params;  // ← Await it
+  const slug = params.slug;
 
-  if (!slug || slug === "[slug]") {
-    return NextResponse.json({ error: "Missing or invalid slug" }, { status: 400 });
+  if (!slug) {
+    return NextResponse.json({ error: "Missing slug" }, { status: 400 });
   }
 
   try {
