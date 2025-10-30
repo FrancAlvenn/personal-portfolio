@@ -118,7 +118,7 @@ export default function BlogPost() {
 
       <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-gray-900 prose-p:leading-relaxed prose-a:text-indigo-600 hover:prose-a:underline prose-img:rounded-xl prose-img:shadow-lg">
         {post?.fields?.content && 
-          documentToReactComponents(post.fields.content, {
+          documentToReactComponents(post.fields.content as any, {
             renderNode: {
               [BLOCKS.PARAGRAPH]: (node, children) => (
                 <p className="mb-4">{children}</p>
