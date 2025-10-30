@@ -43,10 +43,12 @@ export default function Navbar() {
   const currentHash = typeof window !== "undefined" ? window.location.hash : "";
 
   const isActive = (path: string, hash?: string) => {
-    if (hash) {
-      return pathname === path && currentHash === hash;
+    if (hash !== "#contact"){
+      if (hash) {
+        return pathname === path && currentHash === hash;
+      }
+      return pathname === path;
     }
-    return pathname === path;
   };
 
   return (

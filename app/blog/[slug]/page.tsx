@@ -6,30 +6,22 @@ import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { Badge, Calendar, Clock, BookOpen } from "lucide-react";
+import { Badge, Calendar, Clock, BookOpen, ChevronLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
+import { useParams } from "next/navigation";
+import remarkGfm from "remark-gfm";
+import { Button } from "@/components/ui/button";
 
 
-interface Props {
-  params: Promise<{ slug: string }>;
-}
+export default function BlogPost() {
+  const params = useParams();
+  const slug = params.slug as string;
+  const { data: post, isLoading, error } = useBlogPostBySlug(slug);
 
-export default function BlogPost({ params }: Props) {
-  const { slug } = React.use(params);
-  const { data, isLoading, error } = useBlogPostBySlug(slug);
-
-  const post = Array.isArray(data) ? data[0] : data;
-
-  console.log("BlogPost data:", data);
-
-  console.log("Post", post);
-
-  console.log("Content type:", typeof post?.fields?.content);
-  console.log("Content value:", post?.fields?.content);
-
+  console.log(post);
 
   return (
     <>
@@ -79,6 +71,10 @@ export default function BlogPost({ params }: Props) {
     ) : (
       <article className="max-w-4xl mx-auto px-4 py-12">
       {/* Meta */}
+      <Button variant="ghost" className="mb-8 px-4 text-sm" onClick={() => window.history.back()}>
+        <ChevronLeft className="w-4 h-4" />
+        Back to Blog
+      </Button>
       <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
         {post?.fields.category && (
           <Badge className="bg-indigo-50 text-indigo-600">

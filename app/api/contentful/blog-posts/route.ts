@@ -13,6 +13,7 @@ export async function GET(request: Request) {
   const limit = searchParams.get("limit") ? parseInt(searchParams.get("limit")!) : 10;
   const category = searchParams.get("category");
   const published = searchParams.get("published") === "false" ? false : true;
+  const slug = searchParams.get("slug");
 
   try {
     const res = await client.getEntries({
@@ -20,6 +21,7 @@ export async function GET(request: Request) {
       order: "-fields.publishedDate" as any,
       limit,
       "fields.published": published,
+      ...(slug && { "fields.slug": slug }),
       ...(category && { "fields.category": category }),
     });
 

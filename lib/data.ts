@@ -1,5 +1,6 @@
 // lib/data.ts
 import { useQuery } from "@tanstack/react-query";
+import { Props } from "next/script";
 
 /* ─────────────────────── Types (simplified) ─────────────────────── */
 export interface BlogPost {
@@ -48,7 +49,15 @@ export async function fetchBlogPosts(
 }
 
 export async function fetchBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+  if (!slug) return null;
+
   const res = await fetch(`/api/contentful/blog-posts/${slug}`);
+  
+  if (!res.ok) {
+    if (res.status === 404) return null;
+    throw new Error("Failed to fetch blog post");
+  }
+
   return res.json();
 }
 
@@ -77,9 +86,10 @@ export function useBlogPosts(
 
 export function useBlogPostBySlug(slug: string) {
   return useQuery({
-    queryKey: ["blog-posts", slug],
+    queryKey: ["blog-posts", slug],  // Unique per slug
     queryFn: () => fetchBlogPostBySlug(slug),
-    enabled: !!slug,
+    enabled: !!slug,  // Only run if slug exists
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }
 

@@ -71,7 +71,7 @@ export default function Blog() {
       </section>
 
       {/* Search and Filter */}
-      <section className="sticky top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
+      <section className="sticky top-15 md:top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">

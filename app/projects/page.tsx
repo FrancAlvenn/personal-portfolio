@@ -54,7 +54,7 @@ export default function Projects() {
       </section>
 
       {/* Filter */}
-      <section className="sticky top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
+      <section className="sticky top-15 md:top-20 z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center gap-4 overflow-x-auto pb-2 md:pb-0">
             <Filter className="w-5 h-5 text-gray-400 shrink-0" />

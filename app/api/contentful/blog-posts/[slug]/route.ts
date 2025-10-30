@@ -1,4 +1,4 @@
-// app/api/contentful/blog-posts/route.ts
+// app/api/contentful/blog-posts/[slug]/route.ts
 import { createClient } from "contentful";
 import { NextResponse } from "next/server";
 
@@ -8,20 +8,27 @@ const client = createClient({
   environment: process.env.CONTENTFUL_ENVIRONMENT ?? "master",
 });
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const limit = searchParams.get("limit") ? Number(searchParams.get("limit")) : 10;
-  const published = searchParams.get("published") !== "false";
-  const category = searchParams.get("category");
+export async function GET(request: Request, { params }: { params: { slug: string } }) {
+  const slug = params?.slug || new URL(request.url).pathname.split("/").pop();
 
-  const query: any = {
-    content_type: "personalBlog",
-    order: "-fields.publishedDate",
-    limit,
-    "fields.published": published,
-  };
-  if (category) query["fields.category"] = category;
+  if (!slug || slug === "[slug]") {
+    return NextResponse.json({ error: "Missing or invalid slug" }, { status: 400 });
+  }
 
-  const res = await client.getEntries(query);
-  return NextResponse.json(res.items);
+  try {
+    const res = await client.getEntries({
+      content_type: "personalBlog",
+      "fields.slug": slug,
+      limit: 1,
+    });
+
+    if (res.items.length === 0) {
+      return NextResponse.json(null, { status: 404 });
+    }
+
+    return NextResponse.json(res.items[0]);
+  } catch (error) {
+    console.error("Contentful fetch error:", error);
+    return NextResponse.json({ error: "Failed to fetch post" }, { status: 500 });
+  }
 }
